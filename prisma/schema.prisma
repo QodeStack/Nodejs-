@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/common/prisma/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Articles {
+  id        Int      @id @default(autoincrement())
+  title     String?  @db.VarChar(255)
+  content   String?  @db.Text
+  imageUrl  String?  @db.VarChar(255)
+  views     Int?
+  userId    Int
+  isDeleted Boolean? @default(false)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Users     Users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Articles_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
+
+model Foods {
+  id          Int      @id @default(autoincrement())
+  name        String?  @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime @default(now()) @db.Timestamp(0)
+  Orders      Orders[]
+}
+
+model Orders {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  foodId    Int?
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @db.Timestamp(0)
+  Users     Users?   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Orders_ibfk_1")
+  Foods     Foods?   @relation(fields: [foodId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Orders_ibfk_2")
+
+  @@index([foodId], map: "foodId")
+  @@index([userId], map: "userId")
+}
+
+model Users {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique(map: "email") @db.VarChar(255)
+  fulName   String?    @db.VarChar(255)
+  avatar    String?    @db.VarChar(255)
+  password  String?    @db.VarChar(255)
+  googleId  String?    @db.VarChar(255)
+  isDeleted Boolean    @default(false)
+  createdAt DateTime   @default(now()) @db.Timestamp(0)
+  updatedAt DateTime   @default(now()) @db.Timestamp(0)
+  Articles  Articles[]
+  Orders    Orders[]
+}

@@ -1,11 +1,8 @@
 import  express from "express";
+import { articleController } from "../controllers/article.controller.js";
 
 const articleRouter = express.Router();
 
-articleRouter.get("/get-list-article",(req,res,next)=>{
-    res.status(200).json({
-        message:"helo cyberrrrrr"
-    })
-});
+articleRouter.get("/",articleController.findAll);
 
 export default articleRouter
