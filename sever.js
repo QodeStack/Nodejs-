@@ -1,9 +1,15 @@
 // inlay int: console.log("hello"); => console.log(message:"hello");
 import express from "express";
 import rootRouter from "./src/routers/root.router.js";
-
+import cors from "cors" 
 
 const app = express()
+
+app.use(cors(
+    {
+        origin: ["http://localhost:3000","https://www.google.com"]
+    }
+))
 app.use("/api",rootRouter)
 
 

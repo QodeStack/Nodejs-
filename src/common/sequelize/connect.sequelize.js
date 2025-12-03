@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
+import { DATABASE_URL } from "../constant/app.constant.js";
 
-const sequelize = new Sequelize('mysql://root:080706@localhost:3307/demo',{logging:true})
+const sequelize = new Sequelize(DATABASE_URL,{logging:true})
 try {
   await sequelize.authenticate();
   console.log('[SEQUELIZE] Connection has been established successfully.');
