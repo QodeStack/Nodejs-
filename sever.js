@@ -5,13 +5,13 @@ import cors from "cors"
 
 const app = express()
 
+app.use(express.json()) // xử lí json trong postman 
 app.use(cors(
     {
         origin: ["http://localhost:3000","https://www.google.com"]
     }
 ))
 app.use("/api",rootRouter)
-
 
 
 const port = 3069;

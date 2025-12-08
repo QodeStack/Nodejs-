@@ -9,16 +9,16 @@ datasource db {
 }
 
 model Articles {
-  id        Int      @id @default(autoincrement())
-  title     String?  @db.VarChar(255)
-  content   String?  @db.Text
-  imageUrl  String?  @db.VarChar(255)
+  id        Int       @id @default(autoincrement())
+  title     String?   @db.VarChar(255)
+  content   String?   @db.Text
+  imageUrl  String?   @db.VarChar(255)
   views     Int?
   userId    Int
-  isDeleted Boolean? @default(false)
-  createdAt DateTime @db.DateTime(0)
-  updatedAt DateTime @db.DateTime(0)
-  Users     Users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Articles_ibfk_1")
+  isDeleted Boolean?  @default(false)
+  createdAt DateTime? @db.DateTime(0)
+  updatedAt DateTime? @db.DateTime(0)
+  Users     Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Articles_ibfk_1")
 
   @@index([userId], map: "userId")
 }
