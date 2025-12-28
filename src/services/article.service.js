@@ -20,9 +20,9 @@ export const articleService = {
      */
     async findAll(req) {
         
-        const { page,pageSize,where,index} = buildQueryPrisma(req.query);
-
-        //console.log("query",{ page , pageSize ,index,filters});
+        const { page,pageSize,where,index,filters} = buildQueryPrisma(req.query);
+        console.log("service payload", req.payload);
+        console.log("query",{ page , pageSize ,index,filters});
 
         //prisma
         const resultPrismaPromise = prisma.articles.findMany({

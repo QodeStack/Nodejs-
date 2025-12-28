@@ -39,6 +39,7 @@ export function buildQueryPrisma(query) {
         page,
         pageSize,
         where,
-        index
+        index,
+        filters
     };
 }

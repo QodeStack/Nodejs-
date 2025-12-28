@@ -6,4 +6,13 @@ export function responseSuccess(data,message="ok",statusCode = 200) {
             data : data,
             doc:"example.com"
     }
-}
+};
+
+export function responseError(message="Interval Server Error",statusCode =500,stack = null) {
+    return {
+            status: "error",
+            statusCode :statusCode,
+            message: message,
+            stack:stack
+    }
+};
