@@ -6,17 +6,17 @@ import { tokenService } from "./token.service.js";
 
 export const authService = {
    async register(req) {
-      const {email,password,fulName} = req.body;
-      console.log({email,password});
+      const { email, password, fulName } = req.body;
+      console.log({ email, password });
 
       // kiểm tra người dùng có hay chưa , nếu đã tồn tại  thì không cho đăng kí 
       const userExist = await prisma.users.findUnique({
-         where:{
-            email:email,
+         where: {
+            email: email,
          }
       });
       // nếu người dùng đã tồn tại thì không cho đăng kí 
-      if (userExist){
+      if (userExist) {
          throw new BadRequestException("Người dùng đã tồn tại ,vui lòng đăng nhập")
       }
       // HASH - băm password 
@@ -27,30 +27,30 @@ export const authService = {
 
       // eamil này chauw tồn tại => tạo người dùng mới 
       await prisma.users.create({
-         data:{
-            email:email,
-            password:hashPassword,
-            fulName :fulName,
+         data: {
+            email: email,
+            password: hashPassword,
+            fulName: fulName,
          },
       });
       return true;
    },
    async login(req) {
-      const {email,password} = req.body;
+      const { email, password } = req.body;
       // kiểm tra email người dùng có tồn tại trong db hay không 
       // nếu mà tồn tại => đi tiếp 
       // nếu mà chưa tồn tại => trả lỗi ( Xin vui lòng đăng kí trước khi đăng nhập )
-      const userExist =await prisma.users.findUnique({
-         where:{
-            email:email,
+      const userExist = await prisma.users.findUnique({
+         where: {
+            email: email,
          },
       });
       if (!userExist) {
          throw new BadRequestException("Xin vui lòng đăng kí trước khi đăng nhập")
-      } 
+      }
       // kiểm tra password 
-      const isPassword= bcrypt.compareSync(password,userExist.password)
-      if (!isPassword){
+      const isPassword = bcrypt.compareSync(password, userExist.password)
+      if (!isPassword) {
          throw new BadRequestException("Mật khẩu chưa chính xác ")
       }
 
@@ -60,10 +60,19 @@ export const authService = {
       // console.log({email,password,userExist});
       return token;
    },
-   async getInfo(req){
-      console.log("getInfo Service",req.user);
+   async getInfo(req) {
+      //console.log("getInfo Service", req.user);
       delete req.user.password;
       return req.user;
+   },
+   async googleCallback(req) {
+      //console.log("user google", req.user);
+      const {accessToken,refreshToken}=tokenService.createTokens(req.user.id);
+      //console.log(accessToken,refreshToken)
+
+      // truyền AT và RT trong query url của FE
+      const urlRedirect = `http://localhost:3000/login-callback?accessToken=${accessToken}&refreshToken=${refreshToken}`;
+      return urlRedirect;
    },
    async create(req) {
       return `This action create`;

@@ -4,6 +4,7 @@ import rootRouter from "./src/routers/root.router.js";
 import cors from "cors" 
 import { appError } from "./src/common/helpers/handle-error.helper.js";
 import { NotFoundException } from "./src/common/helpers/exception.helper.js";
+import { initGoogleStrategy } from "./src/common/passport/login-google.passport.js";
 
 const app = express()
 
@@ -13,6 +14,9 @@ app.use(cors(
         origin: ["http://localhost:3000","https://www.google.com"]
     }
 ))
+
+initGoogleStrategy()
+
 app.use("/api",rootRouter);
 app.use((req,res,next)=>{
     const method = req.method;

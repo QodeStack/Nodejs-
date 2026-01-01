@@ -19,6 +19,10 @@ export const authController = {
       const response = responseSuccess(result, `getInfo auth successfully`);
       res.status(response.statusCode).json(response);
    },
+   async googleCallback(req, res, next) {
+      const result = await authService.googleCallback(req);
+      res.redirect(result);
+   },
    async create(req, res, next) {
       const result = await authService.create(req);
       const response = responseSuccess(result, `Create auth successfully`);

@@ -1,16 +1,17 @@
 import jsonwebtoken from "jsonwebtoken";
+import { ACCESS_TOKEN_SECRET } from "../common/constant/app.constant.js";
 
 export const tokenService = {
     createTokens(userId) {
-        const accessToken = jsonwebtoken.sign({ userId: userId }, "12345", { expiresIn: "1d" });
-        
+        const accessToken = jsonwebtoken.sign({ userId: userId }, ACCESS_TOKEN_SECRET, { expiresIn: "5s" });
+
         return {
             accessToken: accessToken,
             refreshToken: "refreshToken",
         }
     },
     verifyAccessToken(accessToken) {
-        const decode = jsonwebtoken.verify(accessToken,"12345");
+        const decode = jsonwebtoken.verify(accessToken,ACCESS_TOKEN_SECRET);
         return decode; 
     }
 }
