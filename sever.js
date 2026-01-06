@@ -8,6 +8,8 @@ import { initGoogleStrategy } from "./src/common/passport/login-google.passport.
 
 const app = express()
 
+app.use(express.static('./public'))
+
 app.use(express.json()) // xử lí json trong postman 
 app.use(cors(
     {
@@ -18,6 +20,7 @@ app.use(cors(
 initGoogleStrategy()
 
 app.use("/api",rootRouter);
+
 app.use((req,res,next)=>{
     const method = req.method;
     const url = req.originalUrl;
@@ -25,6 +28,7 @@ app.use((req,res,next)=>{
     console.log("APIIIIII",`${method} ${url} ${ip}`);
     throw new NotFoundException()
 })
+
 app.use(appError);
 
 const port = 3069;

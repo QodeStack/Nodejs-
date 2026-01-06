@@ -15,7 +15,7 @@ export const protect =async (req,res,next)=>{
         throw new UnauthorizedException('Không có token');
     }
      const {userId} = tokenService.verifyAccessToken(token);
-    console.log(userId,"UserID");
+    //console.log(userId,"UserID");
 
     const userExits = await prisma.users.findUnique({
           where:{

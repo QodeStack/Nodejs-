@@ -18,6 +18,8 @@ authRouter.get("/google",passport.authenticate("google",{scope: ["email","profil
 // passprot sẽ lấy code và xử  lí với bên google=> lấy thông tin gmail => kích hoạt hàm verify ở trong src\common\passport\login-google.passport.js
 authRouter.get("/google-callback",passport.authenticate("google",{failureRedirect:"/login",session : false }),authController.googleCallback); 
 
+authRouter.post("/refresh-token",authController.refreshToken)
+
 // Tạo route CRUD
 // authRouter.post('/', authController.create);
 // authRouter.get('/', authController.findAll);
