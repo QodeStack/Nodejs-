@@ -46,7 +46,7 @@ export const initGoogleStrategy = () => {
                         email:email,
                         googleId:googleId,
                         avatar:avatar,
-                        fulName:fullName,
+                        fullName:fullName,
                     },
                 });
             }

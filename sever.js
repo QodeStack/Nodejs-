@@ -5,6 +5,8 @@ import cors from "cors"
 import { appError } from "./src/common/helpers/handle-error.helper.js";
 import { NotFoundException } from "./src/common/helpers/exception.helper.js";
 import { initGoogleStrategy } from "./src/common/passport/login-google.passport.js";
+import { createServer } from "http";
+import { initSoket } from "./src/common/socket/init.socket.js";
 
 const app = express()
 
@@ -31,8 +33,11 @@ app.use((req,res,next)=>{
 
 app.use(appError);
 
+const httpServer = createServer(app);
+initSoket(httpServer);
+
 const port = 3069;
-app.listen(port,() =>{
+httpServer.listen(port,() =>{
     console.log(`sever online at : ${port}`);
 
 });

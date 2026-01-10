@@ -4,6 +4,7 @@ import { prisma } from "../common/prisma/connect.prisma.js";
 import fs from "fs"
 import path from "path";
 import cloudinary from "../common/cloudinary/init.cloudinary.js"
+import { buildQueryPrisma } from "../common/helpers/build-query-prisma.helper.js";
 
 export const userService = {
     async avatarLocal(req) {
@@ -44,7 +45,7 @@ export const userService = {
         }
 
         const uploadResult = await new Promise((resolve, reject) => {
-            cloudinary.uploader.upload_stream( (error, uploadResult) => {
+            cloudinary.uploader.upload_stream((error, uploadResult) => {
                 if (error) {
                     return reject(error);
                 }
@@ -78,10 +79,42 @@ export const userService = {
         return `This action create`;
     },
     async findAll(req) {
-        return `This action returns all user`;
+        const { page, pageSize, where, index, filters } = buildQueryPrisma(req.query);
+        //console.log("user payload", req.payload);
+        //console.log("query", { page, pageSize, index, filters });
+
+        //prisma
+        const resultPrismaPromise = prisma.users.findMany({
+            where: where,
+            skip: index, // skip tới vị trị index nào ( OFFSET )
+            take: pageSize, // take : lấy bao nhiêu phần tử ( LIMIT )
+        });
+
+        //sequelize
+        // const resultSequelize = await Article.findAll();
+
+        const totalItemPromise = prisma.users.count({
+            where: where,
+        });
+
+        const [resultPrisma, totalItem] = await Promise.all([resultPrismaPromise, totalItemPromise])
+
+        return {
+            page: page,
+            pageSize: pageSize,
+            totalItem: totalItem,
+            totalPage: Math.ceil(totalItem / pageSize),
+            items: resultPrisma
+        };
     },
 
     async findOne(req) {
+        const user = await prisma.users.findUnique({
+            where:{
+                id: +req.params.id,
+            },
+        })
+        return user;
         return `This action returns a id: ${req.params.id} user`;
     },
 

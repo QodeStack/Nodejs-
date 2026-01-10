@@ -6,7 +6,7 @@ import { tokenService } from "./token.service.js";
 
 export const authService = {
    async register(req) {
-      const { email, password, fulName } = req.body;
+      const { email, password, fullName } = req.body;
       console.log({ email, password });
 
       // kiểm tra người dùng có hay chưa , nếu đã tồn tại  thì không cho đăng kí 
@@ -30,7 +30,7 @@ export const authService = {
          data: {
             email: email,
             password: hashPassword,
-            fulName: fulName,
+            fullName: fullName,
          },
       });
       return true;
