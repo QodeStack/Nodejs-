@@ -4,7 +4,45 @@ import { protect } from '../common/middleware/protect.middleware.js';
 import passport from 'passport';
 
 const authRouter = express.Router();
-
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Đăng ký tài khoản mới
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 example: password123
+ *               name:
+ *                 type: string
+ *                 example: Nguyễn Văn A
+ *     responses:
+ *       200:
+ *         description: Đăng ký thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SuccessResponse'
+ *       400:
+ *         description: Lỗi validation hoặc email đã tồn tại
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 authRouter.post("/register",authController.register);
 authRouter.post("/login",authController.login);
 authRouter.get("/get-info",protect,authController.getInfo);

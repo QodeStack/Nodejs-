@@ -7,7 +7,8 @@ import { NotFoundException } from "./src/common/helpers/exception.helper.js";
 import { initGoogleStrategy } from "./src/common/passport/login-google.passport.js";
 import { createServer } from "http";
 import { initSoket } from "./src/common/socket/init.socket.js";
-
+import { setupSwagger } from './src/common/swagger/swagger.config.js'
+import {setupGraphql} from './src/common/graphql/grapql.config.js'
 const app = express()
 
 app.use(express.static('./public'))
@@ -19,9 +20,14 @@ app.use(cors(
     }
 ))
 
-initGoogleStrategy()
+initGoogleStrategy();
+
+setupSwagger(app);
+
+setupGraphql(app);
 
 app.use("/api",rootRouter);
+
 
 app.use((req,res,next)=>{
     const method = req.method;
